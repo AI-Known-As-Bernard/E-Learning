@@ -1,0 +1,29 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.square {
+  border-radius: 0px;
+}
+
+.maxWidth {
+  width: 100%;
+}
+
+.jumbotron {
+  background-image: linear-gradient(to right, #007bff, #000);
+  color: white;
+}
