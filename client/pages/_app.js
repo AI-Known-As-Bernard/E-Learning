@@ -8,11 +8,16 @@ import TopNav from '../components/TopNav'
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'antd/dist/antd.css';
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+//By default toast messages will appear in the top right corner of the browser page
+
 
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
+    <ToastContainer position="top-center"/>
       <TopNav/>
       <Component {...pageProps}/>
     </>

@@ -4,14 +4,40 @@ Collect user's name, email and password to register
 Then send verified user information to the database
 */
 import {useState} from 'react'
+import axios from 'axios'
+import {toast} from 'react-toastify'
+import {FaSync} from "react-icons/fa"
+import {Puff} from 'react-loading-icons'
+import { Spin } from 'antd'
 
 const Register=()=>{
-    const [name,setName] = useState('')
+    const [firstName,setFirstName] = useState('')
+    const [lastName,setLastName] = useState('')
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
-    const handleSubmit = (e)=>{
+    const [password2,setPassword2] = useState('')
+    const [loading,setLoading] = useState(false)
+    
+    const checkValid = ()=>{
+        const password = document.querySelector('input[name="password"]')
+        const confirmPassword = document.querySelector('input[name="confirmPassword"]')
+        if(password.value ===confirmPassword.value){
+           confirmPassword.setCustomValidity('')
+        }else{confirmPassword.setCustomValidity('Passwords Do Not Match')}
+    }
+    const handleSubmit = async(e)=>{
         e.preventDefault();
-        console.table({name,email,password})
+        try{
+            setLoading(true)
+            console.table({firstName,lastName,email,password})
+            const {data} = await axios.post(process.env.NEXT_PUBLIC_API,{firstName,lastName,email,password})
+            // console.log('REGISTER RESPONSE: ' + data)
+            toast.success('Registration Completed, Please Login')
+            setLoading(false)
+        }catch(err){
+            toast.error(err.response.data)
+            setLoading(false)
+        }
     }
     return (
         <>
@@ -20,30 +46,51 @@ const Register=()=>{
                 <form onSubmit={handleSubmit}>
                     <input 
                         type="text" 
-                        className="form-control mb-4 p-4" 
-                        value={name}  
-                        onchange={(e)=>{setName(e.target.value)}} 
-                        placeholder="Enter Name" 
+                        className="form-control mb-4 p-4 nameInput" 
+                        // value={()=>name}  
+                        onChange={(e)=>{setFirstName(e.target.value)}} 
+                        placeholder="Fist Name" 
+                        required
+                    />
+                    <input 
+                        type="text" 
+                        className="form-control mb-4 p-4 nameInput" 
+                        // value={()=>name}  
+                        onChange={(e)=>{setLastName(e.target.value)}} 
+                        placeholder="Last Name" 
                         required
                     />
                     <input 
                         type="email" 
-                        className="form-control mb-4 p-4" 
-                        value={email}  
-                        onchange={(e)=>{setEmail(e.target.value)}} 
+                        className="form-control mb-4 p-4 emailInput" 
+                        // value={email}  
+                        onChange={(e)=>{setEmail(e.target.value)}} 
                         placeholder="Enter Email" 
                         required
                     />
                     <input 
                         type="password" 
-                        className="form-control mb-4 p-4" 
-                        value={password}  
-                        onchange={(e)=>{setPassword(e.target.value)}} 
+                        className="form-control mb-4 p-4 passwordInput" 
+                        name="password" 
+                        // value={password}  
+                        onChange={(e)=>{setPassword(e.target.value)}} 
                         placeholder="Enter Password" 
                         required
                     />
+                    <input 
+                        type="password" 
+                        name='confirmPassword'
+                        className="form-control mb-4 p-4 passwordInput" 
+                        // value={password}  
+                        onChange={(e)=>{setPassword2(e.target.value);checkValid();}} 
+                        placeholder="Confirm Password" 
+                        required
+                    />
                     <br/>
-                    <button type='submit' className="btn btn-block btn-primary maxWidth ">Submit</button>
+
+                    <button type='submit' className="btn btn-block btn-primary maxWidth " disabled={!firstName || !lastName || !email ||!password || loading}>
+                        {loading ? <Puff stroke="blue" speed={0.8}/>: "Submit"}
+                    </button>
                 </form>
             </div>
         </>

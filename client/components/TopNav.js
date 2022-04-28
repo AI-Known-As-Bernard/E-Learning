@@ -5,29 +5,28 @@ import {AiOutlineUserAdd,AiOutlineHome,AiOutlineLogin} from 'react-icons/ai'
 
 const {Item} = Menu;
 const TopNav=()=>{
-
+    const items = [
+        {
+            label:(<Link href="/">Home</Link>),
+            key: 'Home',
+            icon:(<AiOutlineHome/>)
+        },
+        {
+            label:(<Link href="/login">Login</Link>),
+            key: 'Login',
+            icon:(<AiOutlineLogin/>)
+        },
+        {
+            label:(<Link href="/register">Register</Link>),
+            key: 'Register',
+            icon:(<AiOutlineUserAdd/>),
+        }
+    ];
+    
     return (
-        <Menu mode='horizontal'>
-            <Item>
-                <AiOutlineHome/>&nbsp;&nbsp;
-                <Link href='/'>
-                    <a>Home</a>
-                </Link>
-            </Item>
-            <Item>
-                <AiOutlineLogin/>&nbsp;&nbsp;
-                <Link href='/login'>
-                    <a>Login</a>
-                </Link>
-            </Item>
-            <Item>
-                <AiOutlineUserAdd/>&nbsp;&nbsp;
-                <Link href='/register'>
-                    <a>Register</a>
-                </Link>
-            </Item>
-        </Menu>
+        <Menu mode='horizontal' items={items} defaultSelectedKeys={['Home']}/>
     )
 }
 
 export default TopNav;
+
