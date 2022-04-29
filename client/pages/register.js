@@ -9,6 +9,7 @@ import {toast} from 'react-toastify'
 import {FaSync} from "react-icons/fa"
 import {Puff} from 'react-loading-icons'
 import { Spin } from 'antd'
+import Link from 'next/link'
 
 const Register=()=>{
     const [firstName,setFirstName] = useState('')
@@ -30,7 +31,7 @@ const Register=()=>{
         try{
             setLoading(true)
             console.table({firstName,lastName,email,password})
-            const {data} = await axios.post(process.env.NEXT_PUBLIC_API,{firstName,lastName,email,password})
+            const {data} = await axios.post(`/api/register`,{firstName,lastName,email,password})
             // console.log('REGISTER RESPONSE: ' + data)
             toast.success('Registration Completed, Please Login')
             setLoading(false)
@@ -92,6 +93,10 @@ const Register=()=>{
                         {loading ? <Puff stroke="blue" speed={0.8}/>: "Submit"}
                     </button>
                 </form>
+                <p className="text-center p-3">
+                    Already Registerd?
+                    <Link href="/login">Login</Link>
+                    </p>
             </div>
         </>
     )
