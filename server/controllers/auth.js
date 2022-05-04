@@ -66,3 +66,14 @@ export const login = async(req, res) => {
      * This is our next move 
      */
 }
+
+
+//LOGOUT
+
+export const logout = async(req, res)=>{
+    try{
+        res.clearCookie('token')
+        //removed signed JWT token
+        return res.json({message:'Signout Success'})
+    }catch(err){console.log(err)}
+}

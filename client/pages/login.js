@@ -3,12 +3,14 @@ Register.js
 Collect user's name, email and password to register
 Then send verified user information to the database
 */
-import {useState} from 'react'
+import {useState,useContext} from 'react'
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import {FaSync} from "react-icons/fa"
 import {Puff} from 'react-loading-icons'
 import { Spin } from 'antd'
+import {Context} from '../context/index'
+import {useRouter} from 'next/router'
 import Link from 'next/link'
 
 const Login=()=>{
@@ -16,6 +18,14 @@ const Login=()=>{
     const [password,setPassword] = useState('')
     const [password2,setPassword2] = useState('')
     const [loading,setLoading] = useState(false)
+
+
+    //useContext Provider State:
+    const {state,dispatch} = useContext(Context)
+    console.log("STATE: " + state.user)
+
+    //Router
+    const router = useRouter()
     
     const checkValid = ()=>{
         const password = document.querySelector('input[name="password"]')
@@ -24,15 +34,31 @@ const Login=()=>{
            confirmPassword.setCustomValidity('')
         }else{confirmPassword.setCustomValidity('Passwords Do Not Match')}
     }
+    
+
     const handleSubmit = async(e)=>{
         e.preventDefault();
         try{
             setLoading(true)
             console.table({email,password})
             const {data} = await axios.post(`/api/login`,{email,password})
-            console.log('LOGIN RESPONSE: ' + data)
-            toast.success('Login Successful')
-            setLoading(false)
+            /* 
+            //console.log('LOGIN RESPONSE: ' + data)
+            Sending ACTION with user data to Provider, where the reducer will use the
+            switch statement to determine what infomation is returned with the state*/
+            dispatch({
+                type:"LOGIN",
+                payload:data,
+            })
+            //Save in local storage
+            window.localStorage.setItem('user',JSON.stringify(data))
+            // toast.success('Login Successful')
+            
+            //Redirect After Successfull Login
+            router.push('/')
+            
+            
+            // setLoading(false)
         }catch(err){
             toast.error(err.response.data)
             setLoading(false)
