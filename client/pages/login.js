@@ -1,12 +1,76 @@
-
-
+/*
+Register.js 
+Collect user's name, email and password to register
+Then send verified user information to the database
+*/
+import {useState} from 'react'
+import axios from 'axios'
+import {toast} from 'react-toastify'
+import {FaSync} from "react-icons/fa"
+import {Puff} from 'react-loading-icons'
+import { Spin } from 'antd'
+import Link from 'next/link'
 
 const Login=()=>{
-
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
+    const [password2,setPassword2] = useState('')
+    const [loading,setLoading] = useState(false)
+    
+    const checkValid = ()=>{
+        const password = document.querySelector('input[name="password"]')
+        const confirmPassword = document.querySelector('input[name="confirmPassword"]')
+        if(password.value ===confirmPassword.value){
+           confirmPassword.setCustomValidity('')
+        }else{confirmPassword.setCustomValidity('Passwords Do Not Match')}
+    }
+    const handleSubmit = async(e)=>{
+        e.preventDefault();
+        try{
+            setLoading(true)
+            console.table({email,password})
+            const {data} = await axios.post(`/api/login`,{email,password})
+            console.log('LOGIN RESPONSE: ' + data)
+            toast.success('Login Successful')
+            setLoading(false)
+        }catch(err){
+            toast.error(err.response.data)
+            setLoading(false)
+        }
+    }
     return (
         <>
             <h1 className="jumbotron text-center bg-primary square">Login</h1>
-            <p>Login Page</p>
+            <div className="container col-md-4 offset-md-4 pb-5">
+                <form onSubmit={handleSubmit}>
+                    <input 
+                        type="email" 
+                        className="form-control mb-4 p-4 emailInput" 
+                        // value={email}  
+                        onChange={(e)=>{setEmail(e.target.value)}} 
+                        placeholder="Enter Email" 
+                        required
+                    />
+                    <input 
+                        type="password" 
+                        className="form-control mb-4 p-4 passwordInput" 
+                        name="password" 
+                        // value={password}  
+                        onChange={(e)=>{setPassword(e.target.value)}} 
+                        placeholder="Enter Password" 
+                        required
+                    />
+                    <br/>
+
+                    <button type='submit' className="btn btn-block btn-primary maxWidth " disabled={ !email ||!password || loading}>
+                        {loading ? <Puff stroke="blue" speed={0.8}/>: "Submit"}
+                    </button>
+                </form>
+                <p className="text-center p-3">
+                    New to the platform? 
+                    <Link href="/register"> Register</Link>
+                    </p>
+            </div>
         </>
     )
 }

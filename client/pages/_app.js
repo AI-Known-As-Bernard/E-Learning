@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css'
 function MyApp({ Component, pageProps }) {
   return (
     <>
-    <ToastContainer position="top-center"/>
+      <ToastContainer position="top-center"/>
       <TopNav/>
       <Component {...pageProps}/>
     </>

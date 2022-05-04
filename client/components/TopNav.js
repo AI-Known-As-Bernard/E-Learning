@@ -1,17 +1,17 @@
-import {useState,useEffect} from 'react'
-import  {Menu} from 'antd'
+import {useState,useEffect,useContext} from 'react'
+import {Menu} from 'antd'
+import {useRouter} from 'next/router'
 import Link from 'next/link'
 import {AiOutlineUserAdd,AiOutlineHome,AiOutlineLogin} from 'react-icons/ai'
 //https://ant.design/components/menu/
 
 const {Item} = Menu;
-const TopNav=()=>{
+const TopNav=(setPath)=>{
+    var router = useRouter()
     const [current,setCurrent]= useState('')
-    
     useEffect(()=>{
-        process.browser && setCurrent(window.location.pathname)
-        consoel.log()
-    },[])
+        setCurrent(router.pathname)
+    },[router.pathname])
 
     const items = [
         {
