@@ -6,7 +6,7 @@ import {AiOutlineUserAdd,AiOutlineHome,AiOutlineLogin,AiOutlineLogout} from 'rea
 //https://ant.design/components/menu/
 import {Context} from '../context/index'
 import axios from 'axios'
-import toast from 'react-toastify'
+import {toast} from 'react-toastify'
 
 
 const TopNav=(setPath)=>{
@@ -15,46 +15,90 @@ const TopNav=(setPath)=>{
     const router = useRouter()
     //Dispatch Logout actions
     const {state, dispatch} = useContext(Context)
+    //Conditionally render links in the navbar
+    const {user}= state
+    var items=[]
+    if(user == null){
+         items = [
+            {
+                label:(<Link href="/">Home</Link>),
+                key: '/',
+                icon:(<AiOutlineHome/>)
+            },
+            {
+                label:(<Link href="/register">Register</Link>),
+                key: '/register',
+                icon:(<AiOutlineUserAdd/>),
+            },
+            {
+                label:(<Link href="/login">Login</Link>),
+                key: '/login',
+                icon:(<AiOutlineLogin/>)
+            },
+        ]
+    }else{
+         items = [
+            {
+                label:(<Link href="/">Home</Link>),
+                key: '/',
+                icon:(<AiOutlineHome/>)
+            },
+            {
+                label:("Logout"),
+                key:'logOut',
+                icon:(<AiOutlineLogout/>), 
+            }
+        ]
+    }
     
     const logout = async() =>{
         dispatch({type:'LOGOUT'})
         window.localStorage.removeItem('user')
+        console.log('logged out started')
         const {data} = await axios.get('/api/logout')
-        toast(data.message)
+        console.log('messageData' + data.message)
+        var temp = data.message
+        toast.success(temp)
         router.push('/login')
     }
 
+    //Changes the active link for the navbar
     useEffect(()=>{
         setCurrent(router.pathname)
     },[router.pathname])
 
+    //Coditionally sets current location or runs logout based on which button is clicked in the navbar
     const menuClick = (e) =>{
-        setCurrent(e.key)
+        if(e.key == 'logOut'){
+            logout()
+            // setCurrent('/')
+        }else{setCurrent(e.key)}
+        
     }
-    
-    const items = [
-        {
-            label:(<Link href="/">Home</Link>),
-            key: '/',
-            icon:(<AiOutlineHome/>)
-        },
-        {
-            label:(<Link href="/login">Login</Link>),
-            key: '/login',
-            icon:(<AiOutlineLogin/>)
-        },
-        {
-            label:(<Link href="/register">Register</Link>),
-            key: '/register',
-            icon:(<AiOutlineUserAdd/>),
-        },
-        {
-            label:(<Link href="/" onClick={logout}>Logout</Link>),
-            icon:(<AiOutlineLogout/>),
-            
-        }
-    ];
-    
+    //Each individual item in the navbar
+    // const items = [
+    //     {
+    //         label:(<Link href="/">Home</Link>),
+    //         key: '/',
+    //         icon:(<AiOutlineHome/>)
+    //     },
+    //     {
+    //         label:(<Link href="/register">Register</Link>),
+    //         key: '/register',
+    //         icon:(<AiOutlineUserAdd/>),
+    //     },
+    //     {
+    //         label:(<Link href="/login">Login</Link>),
+    //         key: '/login',
+    //         icon:(<AiOutlineLogin/>)
+    //     },
+    //     {
+    //         label:("Logout"),
+    //         key:'logOut',
+    //         icon:(<AiOutlineLogout/>), 
+    //     }
+    // ];
+    //Returns the menu with all the links renders from the items array
     return (
         <Menu 
             mode='horizontal' 

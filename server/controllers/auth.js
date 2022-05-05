@@ -75,5 +75,5 @@ export const logout = async(req, res)=>{
         res.clearCookie('token')
         //removed signed JWT token
         return res.json({message:'Signout Success'})
-    }catch(err){console.log(err)}
+    }catch(err){console.log(err + "THIS HERE")}
 }

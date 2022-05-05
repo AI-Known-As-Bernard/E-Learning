@@ -11,6 +11,7 @@ import 'antd/dist/antd.css';
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {Provider} from '../context/index'
+import '../styles/topNav.css'
 //By default toast messages will appear in the top right corner of the browser page
 
 
