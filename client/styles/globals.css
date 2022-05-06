@@ -13,14 +13,18 @@ a {
 
 * {
   box-sizing: border-box;
+  color: white;
+}
+body {
+  background-color: black !important;
 }
 
 .square {
   border-radius: 0px;
 }
-li:nth-child(4) {
-  right: 0;
-  position: absolute;
+li:nth-child(2) {
+  right: 0 !important;
+  position: absolute !important;
 }
 
 .maxWidth {
@@ -28,6 +32,6 @@ li:nth-child(4) {
 }
 
 .jumbotron {
-  background-image: linear-gradient(to right, #007bff, #000);
+  background-color: #1890ff;
   color: white;
 }

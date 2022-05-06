@@ -15,7 +15,6 @@ import '../styles/topNav.css'
 //By default toast messages will appear in the top right corner of the browser page
 
 
-
 function MyApp({ Component, pageProps }) {
   return (
     <Provider>

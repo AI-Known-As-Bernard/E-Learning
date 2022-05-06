@@ -9,6 +9,7 @@ import axios from 'axios'
 import {toast} from 'react-toastify'
 
 
+
 const TopNav=(setPath)=>{
 
     const [current,setCurrent]= useState('')
@@ -25,16 +26,17 @@ const TopNav=(setPath)=>{
                 key: '/',
                 icon:(<AiOutlineHome/>)
             },
+             {
+                label:(<Link href="/login">Login</Link>),
+                key: '/login',
+                icon:(<AiOutlineLogin/>)
+            },
             {
                 label:(<Link href="/register">Register</Link>),
                 key: '/register',
                 icon:(<AiOutlineUserAdd/>),
             },
-            {
-                label:(<Link href="/login">Login</Link>),
-                key: '/login',
-                icon:(<AiOutlineLogin/>)
-            },
+           
         ]
     }else{
          items = [
@@ -101,7 +103,8 @@ const TopNav=(setPath)=>{
     //Returns the menu with all the links renders from the items array
     return (
         <Menu 
-            mode='horizontal' 
+            mode='horizontal'
+            theme='dark'
             items={items} 
             onClick={menuClick} 
             selectedKeys={[current]}
