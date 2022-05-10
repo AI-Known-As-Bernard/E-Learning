@@ -3,6 +3,7 @@ import {Menu} from 'antd'
 import {useRouter} from 'next/router'
 import Link from 'next/link'
 import {AiOutlineUserAdd,AiOutlineHome,AiOutlineLogin,AiOutlineLogout} from 'react-icons/ai'
+import {GiMicrochip} from 'react-icons/gi'
 //https://ant.design/components/menu/
 import {Context} from '../context/index'
 import axios from 'axios'
@@ -46,11 +47,16 @@ const TopNav=(setPath)=>{
                 icon:(<AiOutlineHome/>)
             },
             {
-                label:("Logout"),
-                key:'logOut',
-                icon:(<AiOutlineLogout/>), 
+                label:(`Welcome, ${user.firstName}`), 
+                icon:(<GiMicrochip/>),
+                children: [{
+                    label:("Logout"),
+                    key:'logOut',
+                    icon:(<AiOutlineLogout/>), 
+                }]
             }
         ]
+        console.log(user)
     }
     
     const logout = async() =>{

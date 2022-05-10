@@ -1,11 +1,16 @@
 //Documentation:  https://reactjs.org/docs/hooks-reference.html#usereducer
 //https://reactjs.org/docs/hooks-reference.html#usecontext
 import {useReducer, createContext,useContext,useEffect} from 'react';
+import axios from 'axios';
+import useRouter from 'next/router'
 
 //Initial State
 const initialState = {
     user: null,
 }
+
+//router 
+const router = useRouter();
 
 //Create Contexts
 const Context = createContext();
@@ -39,6 +44,36 @@ const Provider = ({children}) => {
                 payload: JSON.parse(window.localStorage.getItem('user'))
             })
         },[])
+
+        //Axios Interceptors
+        //Yes you can use the request option aswell please check out the documentation 
+        axios.interceptors.response(
+            function(response){
+                //Any status code that is in the range of 2XX - successfull will cause the function to trigger
+                return response;
+            },
+            function(error){
+                //Any status codes that falls outside the range of 2XX will cause the function to trigger
+                let res = error.response
+                if(res.status === 401 && res.config && !res.config._isRetryRequest){
+                    return new Promise((resolve, reject)=>{
+                        //execute the loggout process, which will remove the user data saved in the client...etc
+                        axios.get("/api/logout")
+                        .then((data)=>{
+                            console.log('/401 error > logout');
+                            dispatch({type:'LOGOUT'});
+                            window.localStorage.removeItem('user')
+                            router.push('/')
+                        })
+                        .catch((err)=>{
+                            console.log('AXIOS INTERCEPTOR ERR', err)
+                            reject(error)
+                        })
+                    })
+                }
+                return Promise.reject(error)
+            }
+        )
 
         return(
             <Context.Provider value={{state,dispatch}}>

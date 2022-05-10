@@ -3,7 +3,7 @@ Register.js
 Collect user's name, email and password to register
 Then send verified user information to the database
 */
-import {useState,useContext} from 'react'
+import {useState,useContext,useEffect} from 'react'
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import {FaSync} from "react-icons/fa"
@@ -21,12 +21,14 @@ const Login=()=>{
 
 
     //useContext Provider State:
+    //use can also destructure user on the call for the state and dispatcher 
+    //ex:  const {state:{user},dispatch}= useContext(Context)
     const {state,dispatch} = useContext(Context)
+    const {user} = state
     console.log("STATE: " + state.user)
 
     //Router
     const router = useRouter()
-    
     const checkValid = ()=>{
         const password = document.querySelector('input[name="password"]')
         const confirmPassword = document.querySelector('input[name="confirmPassword"]')
@@ -34,6 +36,11 @@ const Login=()=>{
            confirmPassword.setCustomValidity('')
         }else{confirmPassword.setCustomValidity('Passwords Do Not Match')}
     }
+
+    //Re-Routing logged in user away from login.
+    useEffect(()=>{
+        if(user !== null){router.push('/')}
+    },[user])
     
 
     const handleSubmit = async(e)=>{

@@ -46,7 +46,9 @@ export const login = async(req, res) => {
         //Check the Password of the user
         const match= await comparePassword(password,user.password)
         //Create Signed JWT: We can store information in the token and once the token is validated you can access and use that data (ID)
-        const token = jwt.sign({_id: user._id},process.env.JWT_SECRET,{expiresIn: '1d'})
+        const token = jwt.sign({_id: user._id},process.env.JWT_SECRET,{expiresIn: '1d',})
+        //Above details the token expiration next to that will detail the process trigger after any token has hit the expiration time. Do accomplish this we will be using axios interceptors(essentially axios middleware functions that occur on each request)
+        
         //Return user and token to the client, excluding the hashed password
         user.password = undefined//This way the password wont be sent
         //Send token in Cookie
@@ -67,9 +69,7 @@ export const login = async(req, res) => {
      */
 }
 
-
 //LOGOUT
-
 export const logout = async(req, res)=>{
     try{
         res.clearCookie('token')
