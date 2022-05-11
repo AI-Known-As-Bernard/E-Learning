@@ -2,7 +2,7 @@
 //https://reactjs.org/docs/hooks-reference.html#usecontext
 import {useReducer, createContext,useContext,useEffect} from 'react';
 import axios from 'axios';
-import useRouter from 'next/router'
+import {useRouter} from 'next/router'
 
 //Initial State
 const initialState = {
@@ -49,11 +49,11 @@ const Provider = ({children}) => {
         //Yes you can use the request option aswell please check out the documentation 
         axios.interceptors.response(
             function(response){
-                //Any status code that is in the range of 2XX - successfull will cause the function to trigger
+                //Any status code that is in the range of 2XX - successfull will cause this function to trigger
                 return response;
             },
             function(error){
-                //Any status codes that falls outside the range of 2XX will cause the function to trigger
+                //Any status codes that falls outside the range of 2XX will cause this function to trigger
                 let res = error.response
                 if(res.status === 401 && res.config && !res.config._isRetryRequest){
                     return new Promise((resolve, reject)=>{
